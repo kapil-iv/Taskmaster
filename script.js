@@ -568,16 +568,16 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById('download-pdf').addEventListener('click', function () {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    
+  
     let y = 20;
     const leftMargin = 15;
-    const rightMargin = 195;
+    const rightMargin = 200;
     const lineHeight = 7;
     const sectionGap = 10;
   
-    // Safe default font (ASCII compatible)
+    // Fonts
     doc.setFont('times', 'normal');
-    
+  
     // Title
     doc.setFontSize(18);
     doc.setTextColor(33, 33, 33);
@@ -601,9 +601,12 @@ document.addEventListener("DOMContentLoaded", function () {
       doc.setTextColor(0, 0, 0);
       doc.setFillColor(230, 230, 230);
       doc.rect(leftMargin, y - 5, rightMargin - leftMargin, 8, 'F');
+  
       doc.text("Category", leftMargin, y);
-      doc.text("Topic", leftMargin + 60, y);
-      doc.text("Tasks", leftMargin + 120, y);
+      doc.text("Topic", leftMargin + 50, y);
+      doc.text("Task", leftMargin + 100, y);
+      doc.text("Time", leftMargin + 170, y);
+  
       y += lineHeight + 3;
   
       state.todos.forEach((category, i) => {
@@ -615,27 +618,29 @@ document.addEventListener("DOMContentLoaded", function () {
           topic.todos.forEach((todo, k) => {
             const status = todo.done ? "✔" : "☐";
             const taskText = `${status} ${todo.name || todo.text}`;
-            const timeText = todo.time ? ` (${todo.time})` : '';
+            const timeText = todo.time || "";
   
-            // Wrap taskText
+            // Wrap taskText (max 60px width)
             const taskLines = doc.splitTextToSize(taskText, 65);
+            const linesHeight = taskLines.length * lineHeight;
   
-            // Draw each column
             doc.setFont('times', 'normal');
             doc.setFontSize(11);
             doc.setTextColor(0, 0, 0);
-            doc.text(catName, leftMargin, y);
-            doc.text(topicName, leftMargin + 60, y);
-            doc.text(taskLines, leftMargin + 120, y);
   
-            // Time (right-aligned, optional)
-            if (todo.time) {
-              doc.setFontSize(9);
-              doc.setTextColor(120, 120, 120);
-              doc.text(timeText, rightMargin - 30, y);
+            // First line only: set Category, Topic, Task, Time
+            doc.text(catName, leftMargin, y);
+            doc.text(topicName, leftMargin + 50, y);
+            doc.text(taskLines, leftMargin + 100, y);
+            doc.text(timeText, leftMargin + 170, y);
+  
+            // For additional task lines
+            for (let l = 1; l < taskLines.length; l++) {
+              y += lineHeight;
+              doc.text(taskLines[l], leftMargin + 100, y);
             }
   
-            y += taskLines.length * lineHeight;
+            y += lineHeight;
   
             // Page break
             if (y > 275) {
@@ -644,11 +649,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           });
   
-          y += 4; // Space after topic
+          y += 3; // Topic spacing
         });
   
-        // Divider
-        doc.setDrawColor(180, 180, 180);
+        // Divider between categories
+        doc.setDrawColor(200, 200, 200);
         doc.line(leftMargin, y, rightMargin, y);
         y += sectionGap;
       });
@@ -659,10 +664,11 @@ document.addEventListener("DOMContentLoaded", function () {
     doc.setTextColor(150, 150, 150);
     doc.text("Exported from TodoHierarchy App", leftMargin, 290);
   
-    // Save file
+    // Save PDF
     const fileName = `todo-export-${new Date().toISOString().split('T')[0]}.pdf`;
     doc.save(fileName);
   });
+  
   
 
   init();
