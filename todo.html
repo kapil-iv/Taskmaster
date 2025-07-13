@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TASK MASTER</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#007bff" />
+    <link rel="icon" href="./icons/logo.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">TASK MANAGER</div>
+        <div class="nav">
+          <button id="nav-home" class="nav-btn active">
+            <i class="fas fa-home"></i> Home
+          </button>
+          <button id="nav-create" class="nav-btn">
+            <i class="fas fa-plus"></i> Create
+          </button>
+          <button id="nav-view" class="nav-btn">
+            <i class="fas fa-list"></i> View
+          </button>
+          <button id="download-json" class="btn-secondary">
+            <i class="fas fa-download"></i> Download Data
+          </button>
+          <button id="nav-theme" class="nav-btn">
+            <i class="fas fa-moon"></i> Theme
+          </button>
+        </div>
+      </header>
+
+      <!-- Home View -->
+      <div id="home-view" class="view active-view">
+        <div class="stats-container">
+          <div class="stat-card">
+            <h3>Categories</h3>
+            <p id="total-categories">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Topics</h3>
+            <p id="total-topics">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Todos</h3>
+            <p id="total-todos">0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create View -->
+      <div id="create-view" class="view">
+        <div class="form-group">
+          <label for="category-name">Category Name</label>
+          <input
+            type="text"
+            id="category-name"
+            class="form-control"
+            placeholder="Enter category name"
+          />
+          <button
+            id="add-category-btn"
+            class="btn btn-primary"
+            style="margin-top: 10px"
+          >
+            <i class="fas fa-plus"></i> Add Category
+          </button>
+        </div>
+
+        <div id="active-category" class="active-section">
+          <h4>Active Category</h4>
+          <p>Name: <span id="current-category-name"></span></p>
+        </div>
+
+        <div id="topic-section" class="form-group" style="display: none">
+          <label for="topic-name">Topic Name</label>
+          <input
+            type="text"
+            id="topic-name"
+            class="form-control"
+            placeholder="Enter topic name"
+          />
+          <button
+            id="add-topic-btn"
+            class="btn btn-primary"
+            style="margin-top: 10px"
+          >
+            <i class="fas fa-plus"></i> Add Topic
+          </button>
+        </div>
+
+        <div id="active-topic" class="active-section">
+          <h4>Active Topic</h4>
+          <p>Name: <span id="current-topic-name"></span></p>
+        </div>
+
+        <div id="todo-section" class="form-group" style="display: none">
+          <label for="todo-name">Todo Item</label>
+          <input
+            type="text"
+            id="todo-name"
+            class="form-control"
+            placeholder="Enter todo item"
+          />
+
+          <label for="todo-time" style="margin-top: 10px">Estimated Time</label>
+          <select id="todo-time" class="form-control">
+            <option value="">No time estimate</option>
+            <option value="5 min">5 minutes</option>
+            <option value="15 min">15 minutes</option>
+            <option value="30 min">30 minutes</option>
+            <option value="1 hour">1 hour</option>
+            <option value="2 hours">2 hours</option>
+            <option value="4 hours">4 hours</option>
+          </select>
+
+          <button
+            id="add-todo-btn"
+            class="btn btn-primary"
+            style="margin-top: 10px"
+          >
+            <i class="fas fa-plus"></i> Add Todo
+          </button>
+
+          <ul id="todos-list"></ul>
+
+          <div style="margin-top: 20px">
+            <button
+              id="save-structure-btn"
+              class="btn btn-secondary"
+              style="display: none"
+            >
+              <i class="fas fa-save"></i> Save Structure
+            </button>
+            <button
+              id="reset-form-btn"
+              class="btn btn-danger"
+              style="margin-left: 10px"
+            >
+              <i class="fas fa-trash"></i> Reset Form
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- View View -->
+      <div id="view-view" class="view">
+        <div id="todo-structures"></div>
+      </div>
+
+      <!-- Timer Modal -->
+      <div id="timer-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-modal">&times;</span>
+          <h2>Task Timer</h2>
+          <div id="current-task">
+            Current task: <span>No task selected</span>
+          </div>
+          <div class="timer-display" id="timer-display">00:00:00</div>
+          <div class="timer-controls">
+            <button id="start-timer" class="btn btn-primary">
+              <i class="fas fa-play"></i> Start
+            </button>
+            <button id="pause-timer" class="btn btn-secondary" disabled>
+              <i class="fas fa-pause"></i> Pause
+            </button>
+            <button id="reset-timer" class="btn btn-danger">
+              <i class="fas fa-stop"></i> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast Notification -->
+      <div id="toast"></div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
